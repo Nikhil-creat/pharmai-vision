@@ -149,6 +149,7 @@ label{display:block;margin:10px 0 4px;font-size:12.5px;color:var(--mut)}
   <div class="row" style="margin-top:8px"><button id="bModels">🔄 Load my available models</button></div>
   <label>Chat / agent model (auto-fallback if unavailable)</label><input id="mChat" list="dl">
   <label>Vision model (auto-detected if unavailable)</label><input id="mVision" list="dl">
+  <label>Optional: Gemini API key (vision fallback, free at aistudio.google.com/apikey)</label><input id="gkey" type="password" placeholder="AIza..." autocomplete="off">
   <label>Speech-to-text model</label><input id="mStt" list="dl">
   <datalist id="dl"></datalist>
   <label>Answer language</label><select id="lang"><option value="en">English</option><option value="te">తెలుగు (Telugu)</option><option value="hi">हिन्दी (Hindi)</option></select>
@@ -189,15 +190,15 @@ const PREF={chat:['llama-3.3-70b-versatile','openai/gpt-oss-120b','openai/gpt-os
 const VIS=/vision|llama-4|scout|maverick|-vl|vl-/i,NOTCHAT=/whisper|guard|tts|vision|scout|maverick|safeguard|prompt|orpheus|embed/i;
 async function candidates(kind){let ids;try{ids=await listModels()}catch{return[store.get('ok_'+kind,cfg()[kind]),cfg()[kind],...PREF[kind]]}
   const first=[store.get('ok_'+kind,''),cfg()[kind],...PREF[kind]].filter(m=>m&&ids.includes(m));
-  const extra=kind=='vision'?ids.filter(i=>VIS.test(i)):ids.filter(i=>/llama|gpt-oss|qwen|kimi/i.test(i)&&!NOTCHAT.test(i));
-  return[...new Set([...first,...extra])]}
+  const extra=kind=='vision'?[...ids.filter(i=>VIS.test(i)),...ids.filter(i=>!VIS.test(i)&&!NOTCHAT.test(i))]:ids.filter(i=>/llama|gpt-oss|qwen|kimi/i.test(i)&&!NOTCHAT.test(i));
+  return[...new Set([...first,...extra])].slice(0,10)}
 async function groq(messages,{kind='chat',model,onToken,temperature=.1,max=1500,tools}={}){
   const c=cfg();if(!c.key){toast('Add your free Groq API key in Settings');openSet();throw new Error('Missing Groq API key')}
-  let list=model?[model]:await candidates(kind);if(!list.length)list=[c[kind]];let last;
+  let list=model?[model]:await candidates(kind);if(!list.length)list=[c[kind]];let last;const tried=[];
   for(const m of list){
     const body={model:m,messages,temperature,max_tokens:max,stream:!!onToken&&!tools};if(tools){body.tools=tools;body.tool_choice='auto'}
     const r=await fetch(GROQ+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+c.key},body:JSON.stringify(body)});
-    if(!r.ok){const t=await r.text();last=new Error('Groq '+r.status+(r.status==401?' — invalid API key':r.status==429?' — rate limited, wait a minute or pick a smaller model':'')+': '+t.slice(0,140));if(r.status==400||r.status==404)continue;throw last}
+    if(!r.ok){const t=await r.text();last=new Error('Groq '+r.status+(r.status==401?' — invalid API key':r.status==429?' — rate limited, wait a minute or pick a smaller model':'')+': '+t.slice(0,140));tried.push(m+' '+r.status);if(r.status==400||r.status==404)continue;throw last}
     store.set('ok_'+kind,m);if(kind=='chat'&&$('#mdl'))$('#mdl').textContent=m;
     if(tools)return(await r.json()).choices[0].message;
     if(!onToken)return(await r.json()).choices[0].message.content;
@@ -205,7 +206,7 @@ async function groq(messages,{kind='chat',model,onToken,temperature=.1,max=1500,
     for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const ls=buf.split('\n');buf=ls.pop();
       for(const l of ls){if(!l.startsWith('data:'))continue;const d=l.slice(5).trim();if(d==='[DONE]')continue;try{const t=JSON.parse(d).choices[0].delta.content;if(t){out+=t;onToken(out)}}catch{}}}
     return out}
-  throw last||new Error('No usable model found — open Settings → Load my available models')}
+  throw new Error('No working '+kind+' model on your Groq key. Tried: '+tried.join(', ')+(MODELS?' · Your key can see: '+MODELS.slice(0,15).join(', '):'')+(kind=='vision'?' — add a free Gemini key in ⚙ Settings as vision fallback.':''))}
 
 /* ---- openFDA retrieval ---- */
 const ALIAS={dolo:'acetaminophen',crocin:'acetaminophen',calpol:'acetaminophen',paracetamol:'acetaminophen',combiflam:'ibuprofen',brufen:'ibuprofen',ecosprin:'aspirin',disprin:'aspirin',glycomet:'metformin',thyronorm:'levothyroxine',eltroxin:'levothyroxine',telma:'telmisartan',amlokind:'amlodipine',amlong:'amlodipine',atorva:'atorvastatin',rosuvas:'rosuvastatin',azithral:'azithromycin',augmentin:'amoxicillin',pan:'pantoprazole',pantop:'pantoprazole',omez:'omeprazole',cetzine:'cetirizine',allegra:'fexofenadine',montair:'montelukast',limcee:'ascorbic acid',zyrtec:'cetirizine',voveran:'diclofenac',sinarest:'phenylephrine'};
@@ -240,6 +241,16 @@ async function briefing(name,out){
   const bad=ungrounded(ans,src);
   out.querySelector('.bd').innerHTML=bad.length?`<span class="chip warn">⚠ Unverified figures not found in label: ${esc(bad.join(', '))} — do not rely on them</span>`:'<span class="chip ok">✓ All dose figures verified against FDA label text</span>'}
 
+/* ---- Gemini vision fallback (optional free key from aistudio.google.com/apikey) ---- */
+async function geminiVision(prompt,dataUrl){
+  const k=store.get('gkey','');if(!k)throw new Error('No Gemini key');let model=store.get('gmodel','');
+  if(!model){try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?key='+k);const j=await r.json();
+    const ms=(j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')&&/gemini-[\d.]+-flash/.test(m.name)&&!/lite|image|tts|live|thinking|preview|exp|audio/.test(m.name)).map(m=>m.name.replace('models/',''));
+    ms.sort().reverse();model=ms[0]||'gemini-2.0-flash'}catch{model='gemini-2.0-flash'}store.set('gmodel',model)}
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt},{inline_data:{mime_type:'image/jpeg',data:dataUrl.split(',')[1]}}]}],generationConfig:{temperature:0.1}})});
+  if(!r.ok){store.set('gmodel','');throw new Error('Gemini '+r.status+': '+(await r.text()).slice(0,140))}
+  const j=await r.json();return(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('')}
+
 /* ---- Scan: vision (pack text OR loose pill) ---- */
 let imgData=null,mode='pack';
 $$('#modes .chip').forEach(c=>c.onclick=()=>{mode=c.dataset.m;$$('#modes .chip').forEach(x=>x.classList.toggle('ok',x==c))});
@@ -252,7 +263,7 @@ $('#bId').onclick=async()=>{
   const hint=$('#hint').value;if(emergency(hint))return;
   const out=$('#idOut');out.style.display='block';out.innerHTML='<span class="spin"></span>Analyzing image…';busy($('#bId'),true);
   try{
-    const txt=await groq([{role:'user',content:[{type:'text',text:VP[mode](hint)},{type:'image_url',image_url:{url:imgData}}]}],{kind:'vision',max:600});
+    let txt;try{txt=await groq([{role:'user',content:[{type:'text',text:VP[mode](hint)},{type:'image_url',image_url:{url:imgData}}]}],{kind:'vision',max:600})}catch(e){if(!store.get('gkey',''))throw e;toast('Groq vision unavailable — using Gemini');txt=await geminiVision(VP[mode](hint),imgData)}
     let j={};try{j=JSON.parse(txt.slice(txt.indexOf('{'),txt.lastIndexOf('}')+1))}catch{}
     const keys=mode=='pack'?['brand','manufacturer','batch','mfg_date','expiry','mrp','form','category']:['shape','color','imprint','score_lines','form','size_estimate'];
     const comp=[].concat(j.composition||[]).filter(Boolean);
@@ -377,10 +388,10 @@ $('#bMic').onclick=async()=>{
 
 /* ---- Tabs & settings ---- */
 $$('#tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.t));
-function openSet(){const c=cfg(),p=store.get('profile',{});$('#key').value=c.key;$('#mChat').value=c.chat;$('#mVision').value=c.vision;$('#mStt').value=c.stt;$('#lang').value=c.lang;$('#pAge').value=p.age||'';$('#pPreg').value=p.preg||'no';$('#pKid').value=p.kid||'no';$('#pLiv').value=p.liv||'no';$('#pAll').value=p.all||'';$('#pMeds').value=p.meds||'';$('#pNotes').value=store.get('notes',[]).join('\n');$('#mSet').classList.add('on')}
+function openSet(){const c=cfg(),p=store.get('profile',{});$('#key').value=c.key;$('#mChat').value=c.chat;$('#mVision').value=c.vision;$('#mStt').value=c.stt;$('#gkey').value=store.get('gkey','');$('#lang').value=c.lang;$('#pAge').value=p.age||'';$('#pPreg').value=p.preg||'no';$('#pKid').value=p.kid||'no';$('#pLiv').value=p.liv||'no';$('#pAll').value=p.all||'';$('#pMeds').value=p.meds||'';$('#pNotes').value=store.get('notes',[]).join('\n');$('#mSet').classList.add('on')}
 $('#bSet').onclick=openSet;$('#bClose').onclick=()=>$('#mSet').classList.remove('on');
 $('#bModels').onclick=async()=>{store.set('key',$('#key').value.trim());MODELS=null;try{const ids=await listModels();$('#dl').innerHTML=ids.map(i=>`<option value="${esc(i)}">`).join('');toast(ids.length+' models available to your key')}catch(e){toast(e.message)}};
-$('#bSave').onclick=()=>{store.set('key',$('#key').value.trim());store.set('mChat',$('#mChat').value.trim());store.set('mVision',$('#mVision').value.trim());store.set('mStt',$('#mStt').value.trim());store.set('lang',$('#lang').value);store.set('notes',$('#pNotes').value.split('\n').map(s=>s.trim()).filter(Boolean));store.set('profile',{age:$('#pAge').value,preg:$('#pPreg').value,kid:$('#pKid').value,liv:$('#pLiv').value,all:$('#pAll').value,meds:$('#pMeds').value});MODELS=null;$('#mSet').classList.remove('on');toast('Saved locally')};
+$('#bSave').onclick=()=>{store.set('key',$('#key').value.trim());store.set('mChat',$('#mChat').value.trim());store.set('mVision',$('#mVision').value.trim());store.set('mStt',$('#mStt').value.trim());store.set('gkey',$('#gkey').value.trim());store.set('gmodel','');store.set('lang',$('#lang').value);store.set('notes',$('#pNotes').value.split('\n').map(s=>s.trim()).filter(Boolean));store.set('profile',{age:$('#pAge').value,preg:$('#pPreg').value,kid:$('#pKid').value,liv:$('#pLiv').value,all:$('#pAll').value,meds:$('#pMeds').value});MODELS=null;$('#mSet').classList.remove('on');toast('Saved locally')};
 $('#bWipe').onclick=()=>{try{localStorage.clear()}catch{}hist=[];$('#chatlog').innerHTML='';renderCab();toast('Local data erased');$('#mSet').classList.remove('on')};
 $('#bPrint').onclick=()=>window.print();
 renderCab();
