@@ -4,21 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="author" content="Nikhil Chary Sriramoju">
-<meta name="description" content="PharmAi Vision — AI medicine identifier and agentic assistant. Designed and developed by Nikhil Chary Sriramoju.">
+<meta name="description" content="PharmAi Vision — agentic AI medicine assistant. Designed and developed by Nikhil Chary Sriramoju.">
 <meta name="theme-color" content="#070b1a">
 <link rel="manifest" href="manifest.json">
-<title>PharmAi Vision — Medicine Intelligence</title>
+<title>PharmAi Vision — Agentic Medicine Intelligence</title>
 <style>
 :root{--bg:#070b1a;--card:rgba(255,255,255,.055);--bd:rgba(255,255,255,.11);--tx:#e8ecff;--mut:#8b94b8;--a:#4df0c8;--b:#7c6cff;--r:#ff4d6d;--w:#ffc24d}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--tx);background:var(--bg);min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
 body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(60% 50% at 15% 10%,#2a1b6e55,transparent),radial-gradient(50% 45% at 90% 20%,#0f6e6355,transparent),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/44px 44px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/44px 44px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 18px 10px;max-width:980px;margin:auto}
-.logo{font-weight:800;font-size:20px;letter-spacing:.3px}.logo b{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo{font-weight:800;font-size:20px}.logo b{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
 .pill{font-size:11px;padding:3px 9px;border:1px solid var(--bd);border-radius:99px;color:var(--mut)}
-button,.btn{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 14px;border-radius:12px;transition:.15s}
-button:hover{border-color:var(--a)}button.pri{background:linear-gradient(90deg,var(--a),var(--b));color:#06101a;font-weight:700;border:0}
-button:disabled{opacity:.5;cursor:wait}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 14px;border-radius:12px;transition:.15s}
+button:hover{border-color:var(--a)}button.pri{background:linear-gradient(90deg,var(--a),var(--b));color:#06101a;font-weight:700;border:0}button:disabled{opacity:.5;cursor:wait}
 nav{display:flex;gap:6px;overflow-x:auto;padding:4px 18px;max-width:980px;margin:auto;scrollbar-width:none}
 nav button{white-space:nowrap}nav button.on{border-color:var(--a);color:var(--a);background:#4df0c814}
 main{max-width:980px;margin:auto;padding:14px 18px 30px}
@@ -26,14 +25,16 @@ section{display:none}section.on{display:block}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:14px;backdrop-filter:blur(14px)}
 input,select,textarea{width:100%;font:inherit;color:var(--tx);background:#0d1330;border:1px solid var(--bd);border-radius:12px;padding:10px 12px;outline:none}
 input:focus,textarea:focus,select:focus{border-color:var(--a)}
-.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}.row>button{flex:0 0 auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1;min-width:110px}.row>button{flex:0 0 auto}
 .chip{display:inline-block;margin:3px 4px 3px 0;padding:4px 10px;border-radius:99px;font-size:12px;border:1px solid var(--bd);background:#ffffff0d}
 .chip.c{border-color:var(--a);color:var(--a);cursor:pointer}
-.out{white-space:normal;word-wrap:break-word}.out h3,.out h4{margin:14px 0 4px;color:var(--a)}.out ul{margin:4px 0 4px 18px;padding:0}
+.out h3,.out h4{margin:14px 0 4px;color:var(--a)}.out ul{margin:4px 0 4px 18px;padding:0}
 .warn{border-color:var(--w);color:var(--w)}.ok{border-color:var(--a);color:var(--a)}
 .emg{display:none;background:#3a0a14;border:2px solid var(--r);color:#ffd5dc;border-radius:16px;padding:14px;margin:0 0 14px;font-weight:600}
-.msg{padding:10px 13px;border-radius:14px;margin:8px 0;max-width:92%}.me{background:#7c6cff33;margin-left:auto}.ai{background:#ffffff0d}
-#chatlog{max-height:52vh;overflow:auto}
+.rem{display:none;background:#0b2e2a;border:2px solid var(--a);border-radius:16px;padding:12px 14px;margin:0 0 14px;cursor:pointer}
+.msg{padding:10px 13px;border-radius:14px;margin:8px 0;max-width:94%}.me{background:#7c6cff33;margin-left:auto}.ai{background:#ffffff0d}
+#chatlog{max-height:54vh;overflow:auto}
+details.trace{margin-top:8px;font-size:12px;color:var(--mut)}details.trace summary{cursor:pointer;color:var(--a)}
 img.prev{max-width:100%;max-height:260px;border-radius:14px;display:block;margin:10px 0}
 .mut{color:var(--mut);font-size:12.5px}
 .dis{font-size:12px;color:var(--mut);border-top:1px solid var(--bd);margin-top:18px;padding-top:12px}
@@ -42,54 +43,72 @@ footer{text-align:center;padding:26px 18px calc(30px + env(safe-area-inset-botto
 @keyframes fl{to{background-position:300% 0}}
 footer a{color:var(--tx);text-decoration:none;border:1px solid var(--bd);padding:6px 12px;border-radius:99px;margin:4px;display:inline-block;font-size:13px}footer a:hover{border-color:var(--a)}
 .modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:9;padding:16px}.modal.on{display:flex}
-.modal .card{max-width:520px;width:100%;max-height:90vh;overflow:auto;background:#0b1130}
+.modal .card{max-width:540px;width:100%;max-height:90vh;overflow:auto;background:#0b1130}
 label{display:block;margin:10px 0 4px;font-size:12.5px;color:var(--mut)}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0b1130;border:1px solid var(--a);padding:9px 16px;border-radius:12px;display:none;z-index:20}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0b1130;border:1px solid var(--a);padding:9px 16px;border-radius:12px;display:none;z-index:20;max-width:90vw}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--bd);border-top-color:var(--a);border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes s{to{transform:rotate(360deg)}}
+.bar{height:8px;border-radius:9px;background:#ffffff14;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b))}
+@media print{header,nav,footer,.row,button,.dis,#toast,.modal,.rem,.emg{display:none!important}body{background:#fff;color:#000}body:before{display:none}.card{background:#fff;border:0;color:#000}.out h3,.out h4{color:#000}}
 </style>
 </head>
 <body>
 <header>
-  <div><div class="logo">Pharm<b>Ai</b> Vision</div><span class="pill">Groq-powered · FDA-grounded</span></div>
+  <div><div class="logo">Pharm<b>Ai</b> Vision</div><span class="pill">Agentic · Groq · FDA-grounded</span></div>
   <button id="bSet">⚙ Settings</button>
 </header>
 <nav id="tabs">
-  <button data-t="identify" class="on">📷 Identify</button>
+  <button data-t="chat" class="on">🤖 Assistant</button>
+  <button data-t="identify">📷 Scan</button>
   <button data-t="search">🔎 Medicine Info</button>
-  <button data-t="chat">💬 Assistant</button>
+  <button data-t="cab">💊 My Cabinet</button>
   <button data-t="inter">⚠ Interactions</button>
   <button data-t="about">ℹ About</button>
 </nav>
 <main>
 <div class="emg" id="emg"></div>
+<div class="rem" id="rem"></div>
 
-<section id="identify" class="on">
+<section id="chat" class="on">
   <div class="card">
-    <b>Identify a tablet from a photo</b>
-    <p class="mut">Take a clear photo on a plain background (imprint facing the camera). The vision model describes the pill; always verify the imprint with a pharmacist.</p>
+    <div class="row"><b>🤖 PharmAi Agent</b><span class="pill" id="mdl">auto model</span><button id="bClr">Clear</button></div>
+    <p class="mut">A tool-using agent: it plans, calls FDA labels, interaction scans, adverse-event and recall data and your cabinet, then checks its own answer for unverified numbers. Ask in English, Telugu or Hindi (set in Settings).</p>
+    <div id="chips"></div>
+    <div id="chatlog"></div>
+    <div class="row" style="margin-top:10px"><input id="cin" placeholder="Ask about a medicine, or say 'add metformin at 08:00 and 20:00'"><button id="bMic">🎤</button><button class="pri" id="bSend">Send</button></div>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="tts" style="width:auto"> Read answers aloud</label>
+  </div>
+</section>
+
+<section id="identify">
+  <div class="card">
+    <b>Scan a pill or a medicine pack</b>
+    <div id="modes" style="margin:8px 0"><span class="chip c ok" data-m="pack">📦 Read pack / strip text</span><span class="chip c" data-m="pill">💊 Describe loose pill</span></div>
+    <p class="mut">Pack mode reads brand, composition, batch and expiry. Pill mode describes shape, colour and imprint. Use a clear photo in good light. AI can misread — verify with a pharmacist.</p>
     <input type="file" id="file" accept="image/*" capture="environment">
     <img id="prev" class="prev" style="display:none" alt="preview">
-    <div class="row" style="margin-top:8px"><input id="hint" placeholder="Optional: imprint / text printed on pill or pack"><button class="pri" id="bId">Analyze</button></div>
+    <div class="row" style="margin-top:8px"><input id="hint" placeholder="Optional hint: imprint / name on pack"><button class="pri" id="bId">Analyze</button></div>
   </div>
   <div class="card" id="idOut" style="display:none"></div>
 </section>
 
 <section id="search">
   <div class="card">
-    <div class="row"><input id="q" placeholder="Brand or generic name, e.g. Metformin, Dolo, Crocin, Ibuprofen"><button class="pri" id="bQ">Get briefing</button></div>
-    <p class="mut">Data: U.S. FDA drug labels (openFDA). The AI may only use label text; every dose figure is checked against it.</p>
+    <div class="row"><input id="q" placeholder="Brand or generic: Dolo, Crocin, Metformin, Ibuprofen…"><button class="pri" id="bQ">Get briefing</button></div>
+    <p class="mut">Source: U.S. FDA drug labels (openFDA). Indian brands like Dolo or Crocin are mapped to their generic. The AI may only use label text; dose figures are verified against it.</p>
   </div>
   <div class="card out" id="qOut" style="display:none"></div>
 </section>
 
-<section id="chat">
+<section id="cab">
   <div class="card">
-    <label>Optional drug context (the assistant will ground answers on this drug's FDA label)</label>
-    <input id="ctx" placeholder="e.g. warfarin">
-    <div id="chatlog"></div>
-    <div class="row" style="margin-top:10px"><input id="cin" placeholder="Ask about a medicine… (or tap 🎤)"><button id="bMic">🎤</button><button class="pri" id="bSend">Send</button></div>
-    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="tts" style="width:auto"> Read answers aloud</label>
+    <b>💊 My Medicine Cabinet</b>
+    <div id="adh" class="mut" style="margin-top:6px"></div><div class="bar"><i id="adhb" style="width:0"></i></div>
+    <div class="row"><input id="cName" placeholder="Medicine name"><input id="cTimes" placeholder="Times e.g. 08:00, 20:00"></div>
+    <div class="row" style="margin-top:8px"><input id="cExp" type="date"><input id="cNote" placeholder="Note e.g. after food"><button class="pri" id="bCadd">Add</button></div>
+    <div class="row" style="margin-top:8px"><button id="bNotif">🔔 Enable reminders</button><button id="bCint">⚠ Check interactions</button><button id="bCai">🤖 AI review</button></div>
+    <p class="mut">Reminders fire while this page/app is open (browser limitation). Data stays on this device.</p>
   </div>
+  <div id="cList"></div>
 </section>
 
 <section id="inter">
@@ -104,13 +123,14 @@ label{display:block;margin:10px 0 4px;font-size:12.5px;color:var(--mut)}
 <section id="about">
   <div class="card out">
     <h3>PharmAi Vision</h3>
-    <p>Futuristic medicine-information assistant: <b>vision AI</b> pill description, <b>FDA-grounded</b> RAG briefings, <b>interaction scanning</b>, <b>voice</b> (Groq Whisper + speech synthesis), <b>emergency escalation</b>, and a <b>hallucination guard</b> that verifies every dose figure against the label.</p>
-    <p>The full production blueprint (CNN+ViT, LangGraph agents, Neo4j GraphRAG, Docker/K8s) ships in the repository — this page is the free, GitHub-Pages-hostable edition.</p>
-    <p class="mut">Privacy: your Groq key and health profile are stored only in this browser (localStorage). Prompts go directly to Groq; nothing is sent to any other server except public FDA lookups.</p>
+    <p><b>Agentic assistant</b> with tool calling (FDA labels, interactions, FAERS adverse events, recalls, cabinet, memory), self-check guard against unverified doses, <b>vision</b> scanning of packs and pills, <b>medicine cabinet</b> with reminders, <b>voice</b> in English/Telugu/Hindi, emergency escalation, and printable briefings.</p>
+    <p>The full production blueprint (CNN+ViT, LangGraph, Neo4j GraphRAG, Docker/K8s) is in the repository; this page is the free, GitHub-Pages edition.</p>
+    <p class="mut">Privacy: your Groq key, profile, cabinet and chat history are stored only in this browser. Prompts go directly to Groq; only public FDA lookups go elsewhere.</p>
+    <p><button id="bPrint">🖨 Save current page as PDF</button></p>
   </div>
 </section>
 
-<p class="dis">⚕ Educational information only — not medical advice, diagnosis or treatment. Pill identification by AI can be wrong. Never take or stop a medicine based on this tool; confirm with a pharmacist or doctor. In an emergency call your local emergency number (US 911 · EU 112 · India 112) or US Poison Control 1-800-222-1222.</p>
+<p class="dis">⚕ Educational information only — not medical advice, diagnosis or treatment. AI identification can be wrong. Never start, stop or change a medicine based on this tool; confirm with a pharmacist or doctor. Emergency: call your local number (US 911 · EU 112 · India 112) or US Poison Control 1-800-222-1222.</p>
 </main>
 
 <footer>
@@ -124,19 +144,22 @@ label{display:block;margin:10px 0 4px;font-size:12.5px;color:var(--mut)}
 
 <div class="modal" id="mSet"><div class="card">
   <b>Settings</b>
-  <label>Groq API key (free at console.groq.com → API Keys). Stored only in your browser.</label>
+  <label>Groq API key (free: console.groq.com → API Keys). Stored only in your browser.</label>
   <input id="key" type="password" placeholder="gsk_..." autocomplete="off">
-  <label>Chat model</label><input id="mChat">
-  <label>Vision model</label><input id="mVision">
-  <label>Speech-to-text model</label><input id="mStt">
-  <p class="mut">If you hit rate limits, set chat model to <code>llama-3.1-8b-instant</code>. Check console.groq.com/docs/models for current names.</p>
-  <b>My health profile (optional, used to tailor cautions)</b>
+  <div class="row" style="margin-top:8px"><button id="bModels">🔄 Load my available models</button></div>
+  <label>Chat / agent model (auto-fallback if unavailable)</label><input id="mChat" list="dl">
+  <label>Vision model (auto-detected if unavailable)</label><input id="mVision" list="dl">
+  <label>Speech-to-text model</label><input id="mStt" list="dl">
+  <datalist id="dl"></datalist>
+  <label>Answer language</label><select id="lang"><option value="en">English</option><option value="te">తెలుగు (Telugu)</option><option value="hi">हिन्दी (Hindi)</option></select>
+  <b style="display:block;margin-top:14px">My health profile (optional)</b>
   <div class="row"><div><label>Age</label><input id="pAge" type="number" min="0" max="120"></div>
   <div><label>Pregnant / breastfeeding</label><select id="pPreg"><option>no</option><option>pregnant</option><option>breastfeeding</option></select></div></div>
   <div class="row"><div><label>Kidney issues</label><select id="pKid"><option>no</option><option>yes</option></select></div>
   <div><label>Liver issues</label><select id="pLiv"><option>no</option><option>yes</option></select></div></div>
   <label>Allergies</label><input id="pAll" placeholder="e.g. penicillin">
   <label>Current medicines</label><input id="pMeds" placeholder="comma separated">
+  <label>Assistant memory notes (one per line; the agent can add to these)</label><textarea id="pNotes" rows="3"></textarea>
   <div class="row" style="margin-top:14px"><button class="pri" id="bSave">Save</button><button id="bClose">Close</button><button id="bWipe">Erase all local data</button></div>
 </div></div>
 <div id="toast"></div>
@@ -147,118 +170,220 @@ console.log('%cPharmAi Vision — Designed & developed by NIKHIL CHARY SRIRAMOJU
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const GROQ='https://api.groq.com/openai/v1';
-const cfg=()=>({key:store.get('key',''),chat:store.get('mChat','llama-3.3-70b-versatile'),vision:store.get('mVision','meta-llama/llama-4-scout-17b-16e-instruct'),stt:store.get('mStt','whisper-large-v3-turbo')});
+const cfg=()=>({key:store.get('key',''),chat:store.get('mChat','llama-3.3-70b-versatile'),vision:store.get('mVision','meta-llama/llama-4-scout-17b-16e-instruct'),stt:store.get('mStt','whisper-large-v3-turbo'),lang:store.get('lang','en')});
+const LANG={en:['English','en-IN'],te:['Telugu','te-IN'],hi:['Hindi','hi-IN']};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function md(s){s=esc(s);return s.replace(/^#{1,2} (.*)$/gm,'<h3>$1</h3>').replace(/^### (.*)$/gm,'<h4>$1</h4>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/^[-*] (.*)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>\n?)+/g,m=>'<ul>'+m.replace(/\n/g,'')+'</ul>').replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>')}
-function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',3200)}
-const busy=(b,on,t)=>{b.disabled=on;if(t)b.textContent=t};
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',3600)}
+const busy=(b,on)=>{b.disabled=on};
+function switchTab(id){$$('#tabs button').forEach(x=>x.classList.toggle('on',x.dataset.t==id));$$('section').forEach(s=>s.classList.toggle('on',s.id==id))}
 
-/* ---- Emergency escalation (runs BEFORE any AI call) ---- */
+/* ---- Emergency escalation: runs BEFORE any AI call ---- */
 const EMG=[/overdos|took too many|swallowed (a lot|too many)|poison/i,/anaphyla|throat (is )?(closing|swelling)|can'?t breathe|difficulty breathing|face swelling/i,/chest pain|seizure|unconscious|not breathing|suicid|kill myself|end my life/i];
 function emergency(t){if(EMG.some(r=>r.test(t||''))){const e=$('#emg');e.style.display='block';e.innerHTML='🚨 EMERGENCY — this may be life-threatening. Call your local emergency number NOW (US 911 · EU 112 · UK 999 · India 112). US Poison Control: 1-800-222-1222. If you are thinking of self-harm, call or text 988 (US) or your local helpline. Do not wait for this app.';window.scrollTo({top:0,behavior:'smooth'});return true}$('#emg').style.display='none';return false}
 
-/* ---- Groq client ---- */
-async function groq(messages,{model,onToken,temperature=.1,max=1500}={}){
+/* ---- Groq client with automatic model discovery & fallback ---- */
+let MODELS=null;
+async function listModels(){if(MODELS)return MODELS;const r=await fetch(GROQ+'/models',{headers:{Authorization:'Bearer '+cfg().key}});if(!r.ok)throw new Error('Could not list models ('+r.status+')');MODELS=(await r.json()).data.map(m=>m.id);return MODELS}
+const PREF={chat:['llama-3.3-70b-versatile','openai/gpt-oss-120b','openai/gpt-oss-20b','qwen/qwen3-32b','llama-3.1-8b-instant'],vision:['meta-llama/llama-4-scout-17b-16e-instruct','meta-llama/llama-4-maverick-17b-128e-instruct','llama-3.2-90b-vision-preview','llama-3.2-11b-vision-preview']};
+const VIS=/vision|llama-4|scout|maverick|-vl|vl-/i,NOTCHAT=/whisper|guard|tts|vision|scout|maverick|safeguard|prompt|orpheus|embed/i;
+async function candidates(kind){let ids;try{ids=await listModels()}catch{return[store.get('ok_'+kind,cfg()[kind]),cfg()[kind],...PREF[kind]]}
+  const first=[store.get('ok_'+kind,''),cfg()[kind],...PREF[kind]].filter(m=>m&&ids.includes(m));
+  const extra=kind=='vision'?ids.filter(i=>VIS.test(i)):ids.filter(i=>/llama|gpt-oss|qwen|kimi/i.test(i)&&!NOTCHAT.test(i));
+  return[...new Set([...first,...extra])]}
+async function groq(messages,{kind='chat',model,onToken,temperature=.1,max=1500,tools}={}){
   const c=cfg();if(!c.key){toast('Add your free Groq API key in Settings');openSet();throw new Error('Missing Groq API key')}
-  const r=await fetch(GROQ+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+c.key},body:JSON.stringify({model:model||c.chat,messages,temperature,max_tokens:max,stream:!!onToken})});
-  if(!r.ok){const t=await r.text();throw new Error('Groq '+r.status+(r.status==401?' — invalid API key':r.status==429?' — rate limited, retry shortly or use a smaller model':'')+': '+t.slice(0,160))}
-  if(!onToken)return(await r.json()).choices[0].message.content;
-  const rd=r.body.getReader(),dec=new TextDecoder();let buf='',out='';
-  for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const ls=buf.split('\n');buf=ls.pop();
-    for(const l of ls){if(!l.startsWith('data:'))continue;const d=l.slice(5).trim();if(d==='[DONE]')continue;try{const t=JSON.parse(d).choices[0].delta.content;if(t){out+=t;onToken(out)}}catch{}}}
-  return out}
+  let list=model?[model]:await candidates(kind);if(!list.length)list=[c[kind]];let last;
+  for(const m of list){
+    const body={model:m,messages,temperature,max_tokens:max,stream:!!onToken&&!tools};if(tools){body.tools=tools;body.tool_choice='auto'}
+    const r=await fetch(GROQ+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+c.key},body:JSON.stringify(body)});
+    if(!r.ok){const t=await r.text();last=new Error('Groq '+r.status+(r.status==401?' — invalid API key':r.status==429?' — rate limited, wait a minute or pick a smaller model':'')+': '+t.slice(0,140));if(r.status==400||r.status==404)continue;throw last}
+    store.set('ok_'+kind,m);if(kind=='chat'&&$('#mdl'))$('#mdl').textContent=m;
+    if(tools)return(await r.json()).choices[0].message;
+    if(!onToken)return(await r.json()).choices[0].message.content;
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf='',out='';
+    for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const ls=buf.split('\n');buf=ls.pop();
+      for(const l of ls){if(!l.startsWith('data:'))continue;const d=l.slice(5).trim();if(d==='[DONE]')continue;try{const t=JSON.parse(d).choices[0].delta.content;if(t){out+=t;onToken(out)}}catch{}}}
+    return out}
+  throw last||new Error('No usable model found — open Settings → Load my available models')}
 
-/* ---- openFDA retrieval (grounding source) ---- */
+/* ---- openFDA retrieval ---- */
+const ALIAS={dolo:'acetaminophen',crocin:'acetaminophen',calpol:'acetaminophen',paracetamol:'acetaminophen',combiflam:'ibuprofen',brufen:'ibuprofen',ecosprin:'aspirin',disprin:'aspirin',glycomet:'metformin',thyronorm:'levothyroxine',eltroxin:'levothyroxine',telma:'telmisartan',amlokind:'amlodipine',amlong:'amlodipine',atorva:'atorvastatin',rosuvas:'rosuvastatin',azithral:'azithromycin',augmentin:'amoxicillin',pan:'pantoprazole',pantop:'pantoprazole',omez:'omeprazole',cetzine:'cetirizine',allegra:'fexofenadine',montair:'montelukast',limcee:'ascorbic acid',zyrtec:'cetirizine',voveran:'diclofenac',sinarest:'phenylephrine'};
+const canon=n=>{const k=String(n).toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+\d.*$/,'').trim();return ALIAS[k]||String(n).trim()};
 const SEC={boxed_warning:'Boxed warning',indications_and_usage:'Indications',dosage_and_administration:'Dosage & administration',contraindications:'Contraindications',warnings_and_cautions:'Warnings & precautions',warnings:'Warnings',adverse_reactions:'Adverse reactions',drug_interactions:'Drug interactions',pregnancy:'Pregnancy',pediatric_use:'Pediatric use',geriatric_use:'Geriatric use',overdosage:'Overdosage',mechanism_of_action:'Mechanism of action',how_supplied:'How supplied',storage_and_handling:'Storage',information_for_patients:'Patient information'};
-async function fetchLabel(name){
-  const n=encodeURIComponent('"'+name.replace(/["\\]/g,'').trim()+'"');
-  try{const r=await fetch(`https://api.fda.gov/drug/label.json?search=openfda.generic_name:${n}+openfda.brand_name:${n}&limit=1`);if(!r.ok)return null;return(await r.json()).results?.[0]||null}catch{return null}}
+async function fda(path,q){try{const r=await fetch('https://api.fda.gov/drug/'+path+'?'+q);if(!r.ok)return null;return await r.json()}catch{return null}}
+async function fetchLabel(name){const n=encodeURIComponent('"'+canon(name).replace(/["\\]/g,'')+'"');const j=await fda('label.json',`search=openfda.generic_name:${n}+openfda.brand_name:${n}&limit=1`);return j?.results?.[0]||null}
 const secText=(l,k)=>[].concat(l[k]||[]).join(' ').replace(/\s+/g,' ').trim();
 function labelText(l,max=800){return Object.entries(SEC).filter(([k])=>l[k]).map(([k,t])=>`### ${t}\n${secText(l,k).slice(0,max)}`).join('\n\n')}
 function ungrounded(ans,src){const n=t=>t.toLowerCase().replace(/\s+/g,''),s=n(src);const m=ans.match(/\b\d+(\.\d+)?\s?(mg|mcg|µg|g|ml|iu|%)/gi)||[];return[...new Set(m.filter(x=>!s.includes(n(x))))]}
+async function scanPairs(names){const labels=await Promise.all(names.map(fetchLabel));const pairs=[],missing=[];
+  names.forEach((a,i)=>{const l=labels[i];if(!l){missing.push(a);return}const txt=secText(l,'drug_interactions'),low=txt.toLowerCase();
+    names.forEach((b,j)=>{if(i===j)return;const al=[b,canon(b),...(labels[j]?.openfda?.generic_name||[]),...(labels[j]?.openfda?.brand_name||[])].map(x=>x.toLowerCase()).filter(x=>x.length>3);
+      const hit=al.map(x=>low.indexOf(x)).filter(x=>x>=0).sort((p,q)=>p-q)[0];if(hit!==undefined)pairs.push({a,b,snip:txt.slice(Math.max(0,hit-120),hit+220)})})});
+  return{pairs,missing}}
 const profile=()=>{const p=store.get('profile',{});const a=[];if(p.age)a.push('age '+p.age);if(p.preg&&p.preg!='no')a.push(p.preg);if(p.kid=='yes')a.push('kidney impairment');if(p.liv=='yes')a.push('liver impairment');if(p.all)a.push('allergies: '+p.all);if(p.meds)a.push('current meds: '+p.meds);return a.join('; ')};
+const langRule=()=>{const l=LANG[cfg().lang]||LANG.en;return l[0]=='English'?'':`\nRespond in ${l[0]}; keep medicine names, numbers and units in Latin script.`};
+const SYS=`You are PharmAi Vision, a cautious medication-information assistant. Use ONLY the FDA label excerpts provided. Cite the label section in brackets, e.g. [Dosage & administration]. If something is not in the excerpts say "Not stated in label". Never invent doses, numbers or interactions. Never give a personalised dose. Plain language first, then one short technical note. Always end by telling the user to confirm with a pharmacist or doctor.`;
+const SYSG=`No FDA label is available for this product. Give a SHORT general overview only: what kind of product it is, its usual purpose and common precautions. NO doses and NO numbers. If you do not recognise the product, say so; never guess ingredients. State clearly that this is unverified and the user must read the pack insert and ask a pharmacist.`;
 
-const SYS=`You are PharmAi Vision, a cautious medication-information assistant. Use ONLY the FDA label excerpts provided. Cite the label section in brackets, e.g. [Dosage & administration]. If something is not in the excerpts say "Not stated in label". Never invent doses, numbers or interactions. Never give a personalised dose. Write plain language first, then one short technical note. Always end by telling the user to confirm with a pharmacist or doctor.`;
-
-async function briefing(name,out,btn){
+async function briefing(name,out){
   if(emergency(name))return;
   out.style.display='block';out.innerHTML='<span class="spin"></span>Fetching FDA label…';
   const l=await fetchLabel(name);
-  if(!l){out.innerHTML='<span class="chip warn">No FDA label found</span><p>openFDA covers US-labelled products. Try the <b>generic name</b> (e.g. paracetamol → acetaminophen). I will not answer from memory because that risks unverified dosing.</p>';return}
-  const o=l.openfda||{},title=`${(o.brand_name||[name])[0]} — ${(o.generic_name||[''])[0]}`,src=labelText(l);
-  const pr=profile();
+  if(!l){out.innerHTML=`<span class="chip warn">No FDA label found for "${esc(name)}"</span><p>openFDA covers US drugs. Supplements (vitamins, ginseng, herbal) and many Indian-only brands are not included. Try the <b>generic name</b> of the main ingredient. I will not answer dosing from memory.</p><button class="pri" id="bGen">🤖 AI general overview (unverified, no doses)</button><div id="gen2" style="margin-top:8px"></div>`;
+    out.querySelector('#bGen').onclick=async()=>{const g=out.querySelector('#gen2');g.innerHTML='<span class="spin"></span>';try{await groq([{role:'system',content:SYSG+langRule()},{role:'user',content:'Product: '+name}],{onToken:t=>{g.innerHTML=md(t)+'<div class="chip warn">⚠ UNVERIFIED — not from a drug label. Read the pack insert and ask a pharmacist.</div>'}})}catch(e){g.innerHTML='<span class="chip warn">'+esc(e.message)+'</span>'}};return}
+  const o=l.openfda||{},title=`${(o.brand_name||[name])[0]} — ${(o.generic_name||[''])[0]}`,src=labelText(l),pr=profile();
   const user=`Medicine: ${title}\nPatient profile (flag relevant cautions only): ${pr||'none provided'}\n\nFDA LABEL EXCERPTS:\n${src}\n\nWrite sections: 1 Identification & drug class, 2 Why it is used (simple + technical), 3 How, when and how long (food/alcohol/sleep timing), 4 Missed dose & overdose, 5 Safety (boxed warning, side effects, contraindications, interactions), 6 Special populations (pregnancy, lactation, pediatric, geriatric, kidney/liver), 7 Storage & disposal.`;
-  out.innerHTML=`<h3>${esc(title)}</h3><div class="mut">Source: U.S. FDA label${o.manufacturer_name?' · '+esc(o.manufacturer_name[0]):''}${l.effective_time?' · effective '+esc(l.effective_time):''}</div><div id="gen"></div><div id="badge"></div>`;
-  let ans='';
-  try{ans=await groq([{role:'system',content:SYS},{role:'user',content:user}],{onToken:t=>{$('#gen').innerHTML=md(t)},max:1800})}catch(e){$('#gen').innerHTML='<span class="chip warn">'+esc(e.message)+'</span>';return}
+  out.innerHTML=`<h3>${esc(title)}</h3><div class="mut">Source: U.S. FDA label${o.manufacturer_name?' · '+esc(o.manufacturer_name[0]):''}${l.effective_time?' · effective '+esc(l.effective_time):''}</div><div class="g"></div><div class="bd"></div><div class="row" style="margin-top:10px"><button class="add">+ Add to cabinet</button><button class="pr">🖨 Save as PDF</button></div>`;
+  out.querySelector('.add').onclick=()=>{$('#cName').value=(o.brand_name||[name])[0];switchTab('cab')};out.querySelector('.pr').onclick=()=>window.print();
+  let ans='';try{ans=await groq([{role:'system',content:SYS+langRule()},{role:'user',content:user}],{onToken:t=>{out.querySelector('.g').innerHTML=md(t)},max:1800})}catch(e){out.querySelector('.g').innerHTML='<span class="chip warn">'+esc(e.message)+'</span>';return}
   const bad=ungrounded(ans,src);
-  $('#badge').innerHTML=bad.length?`<span class="chip warn">⚠ Unverified figures not found in label: ${esc(bad.join(', '))} — do not rely on them</span>`:'<span class="chip ok">✓ All dose figures verified against FDA label text</span>';
-}
+  out.querySelector('.bd').innerHTML=bad.length?`<span class="chip warn">⚠ Unverified figures not found in label: ${esc(bad.join(', '))} — do not rely on them</span>`:'<span class="chip ok">✓ All dose figures verified against FDA label text</span>'}
 
-/* ---- Identify (vision) ---- */
-let imgData=null;
+/* ---- Scan: vision (pack text OR loose pill) ---- */
+let imgData=null,mode='pack';
+$$('#modes .chip').forEach(c=>c.onclick=()=>{mode=c.dataset.m;$$('#modes .chip').forEach(x=>x.classList.toggle('ok',x==c))});
 $('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);imgData=c.toDataURL('image/jpeg',.85);$('#prev').src=imgData;$('#prev').style.display='block'};im.src=URL.createObjectURL(f)};
+const VP={pill:h=>`You are a pill-description engine. Describe ONLY what is visible. Reply with JSON only: {"shape":"","color":"","imprint":"","score_lines":"","form":"tablet|capsule|other","size_estimate":"","image_quality":"good|poor","candidates":["up to 3 possible generic names, empty if unsure"],"confidence":0.0}. Hint: ${h||'none'}`,
+ pack:h=>`Read the medicine package/strip text. Reply with JSON only: {"brand":"","composition":["each active ingredient with strength"],"manufacturer":"","batch":"","mfg_date":"","expiry":"","mrp":"","form":"","category":"medicine|supplement|other","image_quality":"good|poor","candidates":["generic names of main actives"],"confidence":0.0}. Only text actually visible; use "" if not visible. Hint: ${h||'none'}`};
+function expToDate(s){const m=String(s||'').match(/(\d{1,2})[\/\-. ](\d{2,4})/);if(!m)return'';let y=+m[2];if(y<100)y+=2000;const mo=+m[1];if(mo<1||mo>12)return'';return`${y}-${String(mo).padStart(2,'0')}-${new Date(y,mo,0).getDate()}`}
 $('#bId').onclick=async()=>{
   if(!imgData)return toast('Choose or take a photo first');
   const hint=$('#hint').value;if(emergency(hint))return;
   const out=$('#idOut');out.style.display='block';out.innerHTML='<span class="spin"></span>Analyzing image…';busy($('#bId'),true);
   try{
-    const txt=await groq([{role:'user',content:[{type:'text',text:`You are a pill-description engine. Describe ONLY what is visible. Reply with JSON only: {"shape":"","color":"","imprint":"","score_lines":"","form":"tablet|capsule|other","size_estimate":"","packaging_text":"","image_quality":"good|poor","candidates":["up to 3 possible generic names, empty if unsure"],"confidence":0-1}. User hint: ${hint||'none'}`},{type:'image_url',image_url:{url:imgData}}]}],{model:cfg().vision,max:500});
+    const txt=await groq([{role:'user',content:[{type:'text',text:VP[mode](hint)},{type:'image_url',image_url:{url:imgData}}]}],{kind:'vision',max:600});
     let j={};try{j=JSON.parse(txt.slice(txt.indexOf('{'),txt.lastIndexOf('}')+1))}catch{}
-    const chips=['shape','color','imprint','score_lines','form','size_estimate','packaging_text'].filter(k=>j[k]).map(k=>`<span class="chip">${k.replace('_',' ')}: <b>${esc(j[k])}</b></span>`).join('');
-    const cands=(j.candidates||[]).map(c=>`<span class="chip c" data-n="${esc(c)}">${esc(c)} →</span>`).join('');
+    const keys=mode=='pack'?['brand','manufacturer','batch','mfg_date','expiry','mrp','form','category']:['shape','color','imprint','score_lines','form','size_estimate'];
+    const comp=[].concat(j.composition||[]).filter(Boolean);
+    const chips=keys.filter(k=>j[k]).map(k=>`<span class="chip">${k.replace('_',' ')}: <b>${esc(j[k])}</b></span>`).join('')+comp.map(c=>`<span class="chip">🧪 ${esc(c)}</span>`).join('');
+    const names=[...new Set([j.brand,...(j.candidates||[])].filter(Boolean))];
     const conf=Number(j.confidence)||0;
-    out.innerHTML=`<b>Visual analysis</b><div>${chips||'<span class="mut">Could not read details — retake the photo.</span>'}</div>
-    <div style="margin:8px 0"><span class="chip ${conf>=.8?'ok':'warn'}">model confidence ${(conf*100).toFixed(0)}% (self-reported, not calibrated)</span> ${j.image_quality=='poor'?'<span class="chip warn">poor image quality</span>':''}</div>
-    ${cands?'<div>Possible matches (tap to load FDA label):<br>'+cands+'</div>':''}<p class="mut">⚠ Visual identification is a hint only. Many different pills look alike — confirm the imprint code with a pharmacist or an official pill-ID database before use.</p><div class="card out" id="idBrief" style="display:none;margin-top:10px"></div>`;
+    out.innerHTML=`<b>${mode=='pack'?'Package reading':'Visual analysis'}</b><div>${chips||'<span class="mut">Could not read details — retake the photo closer, in good light.</span>'}</div>
+    <div style="margin:8px 0"><span class="chip ${conf>=.8?'ok':'warn'}">model confidence ${(conf*100).toFixed(0)}% (self-reported)</span>${j.image_quality=='poor'?'<span class="chip warn">poor image quality</span>':''}${j.category=='supplement'?'<span class="chip warn">looks like a supplement — not an FDA drug</span>':''}</div>
+    ${names.length?'<div>Tap to load FDA label:<br>'+names.map(c=>`<span class="chip c" data-n="${esc(c)}">${esc(c)} →</span>`).join('')+'</div>':''}
+    <div class="row" style="margin-top:8px"><button id="bAddC">+ Add to cabinet</button><button id="bAskA">💬 Ask assistant</button></div>
+    <p class="mut">⚠ Visual reading is a hint only. Many products look alike — confirm with the pack insert or a pharmacist.</p><div class="card out" id="idBrief" style="display:none;margin-top:10px"></div>`;
     $$('#idOut .chip.c').forEach(c=>c.onclick=()=>briefing(c.dataset.n,$('#idBrief')));
+    $('#bAddC').onclick=()=>{$('#cName').value=j.brand||names[0]||'';const d=expToDate(j.expiry);if(d)$('#cExp').value=d;switchTab('cab')};
+    $('#bAskA').onclick=()=>{switchTab('chat');send(`I scanned a ${mode=='pack'?'medicine pack':'pill'}: ${JSON.stringify(j).slice(0,500)}. Tell me what it is, what it is used for, and key precautions. Use your tools.`)};
   }catch(e){out.innerHTML='<span class="chip warn">'+esc(e.message)+'</span>'}
   busy($('#bId'),false)};
-
 $('#bQ').onclick=async()=>{const q=$('#q').value.trim();if(!q)return;busy($('#bQ'),true);await briefing(q,$('#qOut')).catch(()=>{});busy($('#bQ'),false)};
 $('#q').onkeydown=e=>{if(e.key==='Enter')$('#bQ').click()};
 
-/* ---- Chat + voice ---- */
-const hist=[];
-function bubble(c,t){const d=document.createElement('div');d.className='msg '+c;d.innerHTML=c=='ai'?md(t):esc(t);$('#chatlog').append(d);$('#chatlog').scrollTop=1e9;return d}
-async function send(text){
-  if(!text.trim())return;bubble('me',text);$('#cin').value='';if(emergency(text))return;
-  let ground='';const ctx=$('#ctx').value.trim();
-  if(ctx){const l=await fetchLabel(ctx);ground=l?`\n\nFDA LABEL EXCERPTS for ${ctx}:\n${labelText(l,600)}`:`\n\n(No FDA label found for "${ctx}" — say you cannot verify details.)`}
-  const sys=SYS+'\nIf no label excerpts are provided, give only general, non-numeric education and advise checking the label or pharmacist.'+(profile()?'\nPatient profile: '+profile():'')+ground;
-  hist.push({role:'user',content:text});const d=bubble('ai','…');
-  try{const a=await groq([{role:'system',content:sys},...hist.slice(-8)],{onToken:t=>{d.innerHTML=md(t);$('#chatlog').scrollTop=1e9},max:900});hist.push({role:'assistant',content:a});
-    if(ground){const bad=ungrounded(a,ground);if(bad.length)d.innerHTML+=`<div class="chip warn">⚠ Unverified figures: ${esc(bad.join(', '))}</div>`}
-    if($('#tts').checked&&window.speechSynthesis){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(a.replace(/[#*\[\]]/g,'')))}
-  }catch(e){d.innerHTML='<span class="chip warn">'+esc(e.message)+'</span>'}}
+/* ---- Interactions tab ---- */
+$('#bI').onclick=async()=>{
+  const names=$('#idrugs').value.split(',').map(s=>s.trim()).filter(Boolean);if(names.length<2)return toast('Enter at least two medicines');
+  const out=$('#iOut');out.style.display='block';out.innerHTML='<span class="spin"></span>Scanning FDA labels…';busy($('#bI'),true);
+  const{pairs,missing}=await scanPairs(names);
+  out.innerHTML='<h3>Result</h3>'+missing.map(m=>`<p><span class="chip warn">No FDA label for ${esc(m)}</span></p>`).join('')+(pairs.length?pairs.map(p=>`<p><span class="chip warn">⚠ ${esc(p.a)} ↔ ${esc(p.b)}</span><br><span class="mut">…${esc(p.snip)}…</span><br><span class="mut">Source: ${esc(p.a)} FDA label, Drug interactions</span></p>`).join(''):'<span class="chip ok">No named pair found in label text</span><p class="mut">This is a text scan of label sections, not a complete clinical check. Absence here does not mean safe — ask a pharmacist.</p>');
+  busy($('#bI'),false)};
+
+/* ---- Medicine cabinet + reminders ---- */
+const ymd=d=>{d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const hm=d=>String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+const normT=t=>{const m=String(t).trim().match(/^(\d{1,2}):?(\d{2})$/);return m&&+m[1]<24&&+m[2]<60?String(+m[1]).padStart(2,'0')+':'+m[2]:null};
+function expChip(e){const d=(new Date(e)-new Date())/864e5;return d<0?'<span class="chip warn">⚠ EXPIRED '+esc(e)+'</span>':d<30?`<span class="chip warn">expires in ${Math.ceil(d)} d</span>`:`<span class="chip ok">exp ${esc(e)}</span>`}
+function renderCab(){const cab=store.get('cab',[]);let due=0,done=0;
+  $('#cList').innerHTML=cab.length?cab.map((m,i)=>{const ts=(m.times||[]).map(t=>{due++;const ok=m.log&&m.log[ymd()+' '+t];if(ok)done++;return `<button class="tk ${ok?'ok':''}" data-i="${i}" data-t="${esc(t)}">${ok?'✔':'○'} ${esc(t)}</button>`}).join(' ');
+    return `<div class="card"><b>${esc(m.name)}</b> ${m.expiry?expChip(m.expiry):''}<div class="mut">${esc(m.note||'')}</div><div style="margin:8px 0">${ts||'<span class="mut">no schedule</span>'}</div><button class="ask" data-n="${esc(m.name)}">💬 Ask AI</button> <button class="rm" data-i="${i}">Remove</button></div>`}).join(''):'<div class="card mut">Cabinet is empty. Add a medicine above, scan a pack, or tell the Assistant: "add metformin at 08:00 and 20:00".</div>';
+  $('#adh').textContent=due?`Today's doses: ${done}/${due} taken`:'';$('#adhb').style.width=(due?done/due*100:0)+'%'}
+$('#cList').onclick=e=>{const b=e.target.closest('button');if(!b)return;const cab=store.get('cab',[]);
+  if(b.classList.contains('tk')){const m=cab[b.dataset.i],k=ymd()+' '+b.dataset.t;m.log=m.log||{};if(m.log[k])delete m.log[k];else m.log[k]=1;store.set('cab',cab)}
+  else if(b.classList.contains('rm')){cab.splice(b.dataset.i,1);store.set('cab',cab)}
+  else if(b.classList.contains('ask')){switchTab('chat');send('Tell me about '+b.dataset.n+' and any precautions. Use your tools.');return}
+  renderCab()};
+$('#bCadd').onclick=()=>{const name=$('#cName').value.trim();if(!name)return toast('Enter a medicine name');
+  const times=$('#cTimes').value.split(',').map(normT).filter(Boolean);const cab=store.get('cab',[]);
+  cab.push({id:Date.now(),name,times,note:$('#cNote').value.trim(),expiry:$('#cExp').value,log:{}});store.set('cab',cab);
+  ['#cName','#cTimes','#cNote','#cExp'].forEach(s=>$(s).value='');renderCab();toast('Added to cabinet')};
+$('#bNotif').onclick=async()=>{if(!window.Notification)return toast('Notifications not supported here');const p=await Notification.requestPermission();toast(p=='granted'?'Reminders enabled':'Permission '+p)};
+$('#bCint').onclick=()=>{const n=store.get('cab',[]).map(m=>m.name);if(n.length<2)return toast('Add at least two medicines');$('#idrugs').value=n.join(', ');switchTab('inter');$('#bI').click()};
+$('#bCai').onclick=()=>{switchTab('chat');send('Review my medicine cabinet: check label interactions between my medicines, recalls, expiry dates and timing. Summarise any risks and what to ask my pharmacist.')};
+function remind(t,b){const r=$('#rem');r.style.display='block';r.innerHTML='💊 <b>'+esc(t)+'</b><div class="mut">'+esc(b)+' — tap to open cabinet</div>';r.onclick=()=>{r.style.display='none';switchTab('cab')};
+  try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch{}if(window.Notification&&Notification.permission==='granted'){try{new Notification(t,{body:b,icon:'icon.svg'})}catch{}}}
+let lastMin='';setInterval(()=>{const now=new Date(),k=ymd(now)+' '+hm(now);if(k===lastMin)return;lastMin=k;
+  store.get('cab',[]).forEach(m=>{if((m.times||[]).includes(hm(now))&&!(m.log&&m.log[k]))remind('Time for '+m.name,m.note||'Log it once taken')})},15000);
+
+/* ---- Agent tools ---- */
+const fn=(name,description,properties,required=[])=>({type:'function',function:{name,description,parameters:{type:'object',properties,required}}});
+const S={type:'string'};
+const TOOLS=[
+ fn('lookup_fda_label','Get FDA label excerpts (indications, dosage, warnings, interactions, storage…) for a medicine by generic or brand name.',{name:S},['name']),
+ fn('check_interactions','Scan FDA labels for interactions between 2 or more medicines.',{drugs:{type:'array',items:S}},['drugs']),
+ fn('adverse_events','Most frequently reported adverse reactions (FDA FAERS) for a medicine. Counts are reports, not incidence.',{name:S},['name']),
+ fn('check_recalls','Recent FDA drug recalls matching a product name.',{name:S},['name']),
+ fn('get_profile','Get the user health profile, current medicines and saved memory notes.',{}),
+ fn('cabinet_list','List medicines in the user medicine cabinet with schedules and expiry.',{}),
+ fn('cabinet_add','Add a medicine to the cabinet with dose times (24h HH:MM). Only when the user asks to add or schedule.',{name:S,times:{type:'array',items:S},note:S,expiry:{type:'string',description:'YYYY-MM-DD'}},['name']),
+ fn('cabinet_remove','Remove a medicine from the cabinet by name. Only when the user asks.',{name:S},['name']),
+ fn('remember','Save a short lasting note about the user (preference or context they stated).',{note:S},['note'])];
+const EXEC={
+ async lookup_fda_label({name},ev){const l=await fetchLabel(name);if(!l)return`No FDA label found for "${name}" (openFDA covers US drugs; supplements and many non-US brands are absent). Do NOT state dosing from memory; say it is unverified.`;const o=l.openfda||{},t=`FDA label: ${(o.brand_name||[name])[0]} / ${(o.generic_name||[''])[0]}\n`+labelText(l,650);ev.push(t);return t},
+ async check_interactions({drugs},ev){const{pairs,missing}=await scanPairs([].concat(drugs||[]));const t=(pairs.length?pairs.map(p=>`${p.a} label mentions ${p.b}: "${p.snip}"`).join('\n'):'No named pair found in label interaction text (not a complete clinical check).')+(missing.length?`\nNo FDA label for: ${missing.join(', ')}`:'');ev.push(t);return t},
+ async adverse_events({name},ev){const n=encodeURIComponent('"'+canon(name)+'"');const j=await fda('event.json',`search=patient.drug.openfda.generic_name:${n}&count=patient.reaction.reactionmeddrapt.exact&limit=10`);if(!j?.results)return'No adverse-event data found.';const t=`FAERS top reported reactions for ${name} (report counts, not incidence): `+j.results.map(r=>`${r.term} (${r.count})`).join(', ');ev.push(t);return t},
+ async check_recalls({name},ev){const n=encodeURIComponent('"'+canon(name)+'"');const j=await fda('enforcement.json',`search=openfda.generic_name:${n}+openfda.brand_name:${n}&sort=report_date:desc&limit=3`);if(!j?.results)return'No recent FDA recalls found for this name.';const t=j.results.map(r=>`${r.report_date}: ${r.classification} — ${(r.reason_for_recall||'').slice(0,200)} [${(r.product_description||'').slice(0,100)}]`).join('\n');ev.push(t);return t},
+ async get_profile(_,ev){const t='Profile: '+(profile()||'none')+'\nMemory notes: '+(store.get('notes',[]).join('; ')||'none');ev.push(t);return t},
+ async cabinet_list(_,ev){const c=store.get('cab',[]);const t=c.length?c.map(m=>`${m.name} | times: ${(m.times||[]).join(', ')||'none'} | note: ${m.note||''} | expiry: ${m.expiry||'n/a'}`).join('\n'):'Cabinet is empty.';ev.push(t);return t},
+ async cabinet_add({name,times=[],note='',expiry=''},ev){const ts=[].concat(times).map(normT).filter(Boolean);const c=store.get('cab',[]);c.push({id:Date.now(),name:String(name),times:ts,note,expiry,log:{}});store.set('cab',c);renderCab();return`Added ${name} with times ${ts.join(', ')||'none'}.`},
+ async cabinet_remove({name}){const c=store.get('cab',[]),n=c.length;store.set('cab',c.filter(m=>m.name.toLowerCase()!=String(name).toLowerCase()));renderCab();return n==store.get('cab',[]).length?'No such medicine in cabinet.':`Removed ${name}.`},
+ async remember({note}){const n=store.get('notes',[]);n.push(String(note).slice(0,200));store.set('notes',n.slice(-20));return'Saved to memory.'}};
+const agentSys=()=>`You are PharmAi Agent, a careful, friendly personal medication assistant. You can call tools.
+Rules: (1) For any fact about a medicine's use, dosing, side effects, interactions, storage or recalls, call the relevant tool first and answer ONLY from tool output, citing the label section in brackets. (2) Never state a dose, number or interaction that a tool did not return; if a tool finds nothing, say it is unverified. (3) Never give a personalised dose or tell the user to start, stop or change a medicine; refer them to a pharmacist or doctor. (4) Use cabinet tools only when the user asks to view, add, remove or schedule. Use remember only for lasting preferences or context the user states. (5) Be concise and structured; use short bullets. (6) For emergencies tell them to call emergency services immediately.
+User profile: ${profile()||'none'}. Memory notes: ${store.get('notes',[]).join('; ')||'none'}.${langRule()}`;
+async function runAgent(text,onStep){
+  const ev=[],msgs=[{role:'system',content:agentSys()},...hist.slice(-8),{role:'user',content:text}];let retried=false;
+  for(let i=0;i<7;i++){
+    const m=await groq(msgs,{tools:TOOLS,max:1300});
+    if(m.tool_calls&&m.tool_calls.length){
+      msgs.push({role:'assistant',content:m.content||'',tool_calls:m.tool_calls});
+      for(const tc of m.tool_calls){let a={};try{a=JSON.parse(tc.function.arguments||'{}')}catch{}
+        onStep({type:'call',name:tc.function.name,args:a});let res;
+        try{res=EXEC[tc.function.name]?await EXEC[tc.function.name](a,ev):'Unknown tool'}catch(e){res='Tool error: '+e.message}
+        res=String(res).slice(0,3600);onStep({type:'obs',text:res.slice(0,150)});msgs.push({role:'tool',tool_call_id:tc.id,content:res})}
+      continue}
+    const ans=m.content||'';const bad=ungrounded(ans,ev.join('\n')+' '+text);
+    if(bad.length&&!retried){retried=true;onStep({type:'guard',text:bad.join(', ')});msgs.push({role:'assistant',content:ans});msgs.push({role:'user',content:'Safety guard: these figures are not in any tool output: '+bad.join(', ')+'. Call the needed tool or rewrite the answer without them.'});continue}
+    return{ans,bad}}
+  return{ans:'I reached my step limit. Please narrow the question.',bad:[]}}
+
+/* ---- Chat UI (agentic assistant) ---- */
+let hist=store.get('chat',[]),running=false;
+function bubble(c,t,raw){const d=document.createElement('div');d.className='msg '+c;d.innerHTML=raw?t:(c=='ai'?md(t):esc(t));$('#chatlog').append(d);$('#chatlog').scrollTop=1e9;return d}
+const stepLine=s=>s.type=='call'?`🔧 ${esc(s.name)}(${esc(JSON.stringify(s.args)).slice(0,90)})`:s.type=='obs'?`&nbsp;&nbsp;↳ ${esc(s.text)}…`:`🛡 Guard re-checked answer (unverified: ${esc(s.text)})`;
+async function send(text){text=(text||'').trim();if(!text||running)return;switchTab('chat');bubble('me',text);$('#cin').value='';
+  if(emergency(text)){bubble('ai','🚨 Please follow the emergency instructions at the top of the page right now.');return}
+  running=true;const d=bubble('ai','<span class="spin"></span>Thinking…',true),steps=[];
+  try{const r=await runAgent(text,s=>{steps.push(s);d.innerHTML='<span class="spin"></span>Working…<div class="mut">'+steps.map(stepLine).join('<br>')+'</div>'});
+    hist.push({role:'user',content:text},{role:'assistant',content:r.ans});hist=hist.slice(-30);store.set('chat',hist);
+    d.innerHTML=md(r.ans)+(r.bad.length?`<div class="chip warn">⚠ Unverified figures: ${esc(r.bad.join(', '))}</div>`:'')+(steps.length?`<details class="trace"><summary>🧠 Agent trace · ${steps.filter(s=>s.type=='call').length} tool calls</summary>${steps.map(stepLine).join('<br>')}</details>`:'');
+    if($('#tts').checked&&window.speechSynthesis){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(r.ans.replace(/[#*\[\]]/g,''));u.lang=(LANG[cfg().lang]||LANG.en)[1];speechSynthesis.speak(u)}
+  }catch(e){d.innerHTML='<span class="chip warn">'+esc(e.message)+'</span>'}
+  running=false;$('#chatlog').scrollTop=1e9}
 $('#bSend').onclick=()=>send($('#cin').value);$('#cin').onkeydown=e=>{if(e.key==='Enter')send($('#cin').value)};
+$('#bClr').onclick=()=>{hist=[];store.set('chat',[]);$('#chatlog').innerHTML='';toast('Chat cleared')};
+$('#chips').innerHTML=['What are my doses today?','Is ibuprofen safe with aspirin?','Explain Dolo 650 simply','Common side effects of metformin','Review my cabinet'].map(c=>`<span class="chip c">${esc(c)}</span>`).join('');
+$$('#chips .chip').forEach(c=>c.onclick=()=>send(c.textContent));
+hist.forEach(m=>bubble(m.role=='user'?'me':'ai',m.content));
 let rec=null,chunks=[];
 $('#bMic').onclick=async()=>{
   if(rec&&rec.state==='recording'){rec.stop();return}
   if(!cfg().key){toast('Add your Groq key first');return openSet()}
   try{const st=await navigator.mediaDevices.getUserMedia({audio:true});rec=new MediaRecorder(st);chunks=[];rec.ondataavailable=e=>chunks.push(e.data);
-    rec.onstop=async()=>{st.getTracks().forEach(t=>t.stop());$('#bMic').textContent='🎤';const fd=new FormData();fd.append('file',new File(chunks,'audio.webm',{type:rec.mimeType||'audio/webm'}));fd.append('model',cfg().stt);
-      try{const r=await fetch(GROQ+'/audio/transcriptions',{method:'POST',headers:{Authorization:'Bearer '+cfg().key},body:fd});if(!r.ok)throw new Error('STT '+r.status);const j=await r.json();$('#cin').value=j.text||'';send(j.text||'')}catch(e){toast(e.message)}};
+    rec.onstop=async()=>{st.getTracks().forEach(t=>t.stop());$('#bMic').textContent='🎤';const fd=new FormData();fd.append('file',new File(chunks,'audio.webm',{type:rec.mimeType||'audio/webm'}));fd.append('model',cfg().stt);if(cfg().lang!='en')fd.append('language',cfg().lang);
+      try{const r=await fetch(GROQ+'/audio/transcriptions',{method:'POST',headers:{Authorization:'Bearer '+cfg().key},body:fd});if(!r.ok)throw new Error('Speech-to-text '+r.status);const j=await r.json();send(j.text||'')}catch(e){toast(e.message)}};
     rec.start();$('#bMic').textContent='⏹'}catch{toast('Microphone permission denied')}};
 
-/* ---- Interactions ---- */
-$('#bI').onclick=async()=>{
-  const names=$('#idrugs').value.split(',').map(s=>s.trim()).filter(Boolean);if(names.length<2)return toast('Enter at least two medicines');
-  const out=$('#iOut');out.style.display='block';out.innerHTML='<span class="spin"></span>Scanning FDA labels…';busy($('#bI'),true);
-  const labels=await Promise.all(names.map(fetchLabel));let html='',found=0;
-  names.forEach((a,i)=>{const l=labels[i];if(!l){html+=`<p><span class="chip warn">No FDA label for ${esc(a)}</span></p>`;return}
-    const txt=secText(l,'drug_interactions');names.forEach((b,j)=>{if(i===j)return;const aliases=[b,...(labels[j]?.openfda?.generic_name||[]),...(labels[j]?.openfda?.brand_name||[])].map(x=>x.toLowerCase()).filter(x=>x.length>3);
-      const low=txt.toLowerCase();const hit=aliases.map(x=>low.indexOf(x)).filter(x=>x>=0).sort((p,q)=>p-q)[0];
-      if(hit!==undefined){found++;html+=`<p><span class="chip warn">⚠ ${esc(a)} ↔ ${esc(b)}</span><br><span class="mut">…${esc(txt.slice(Math.max(0,hit-120),hit+220))}…</span><br><span class="mut">Source: ${esc(a)} FDA label, Drug interactions</span></p>`}})});
-  out.innerHTML=`<h3>Result</h3>${found?html:'<span class="chip ok">No named pair found in label text</span><p class="mut">This is a text scan of label sections, not a complete clinical interaction check. Absence here does not mean it is safe — ask a pharmacist.</p>'+html}`;
-  busy($('#bI'),false)};
-
-/* ---- Tabs, settings ---- */
-$$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button').forEach(x=>x.classList.toggle('on',x==b));$$('section').forEach(s=>s.classList.toggle('on',s.id==b.dataset.t))});
-function openSet(){const c=cfg(),p=store.get('profile',{});$('#key').value=c.key;$('#mChat').value=c.chat;$('#mVision').value=c.vision;$('#mStt').value=c.stt;$('#pAge').value=p.age||'';$('#pPreg').value=p.preg||'no';$('#pKid').value=p.kid||'no';$('#pLiv').value=p.liv||'no';$('#pAll').value=p.all||'';$('#pMeds').value=p.meds||'';$('#mSet').classList.add('on')}
+/* ---- Tabs & settings ---- */
+$$('#tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.t));
+function openSet(){const c=cfg(),p=store.get('profile',{});$('#key').value=c.key;$('#mChat').value=c.chat;$('#mVision').value=c.vision;$('#mStt').value=c.stt;$('#lang').value=c.lang;$('#pAge').value=p.age||'';$('#pPreg').value=p.preg||'no';$('#pKid').value=p.kid||'no';$('#pLiv').value=p.liv||'no';$('#pAll').value=p.all||'';$('#pMeds').value=p.meds||'';$('#pNotes').value=store.get('notes',[]).join('\n');$('#mSet').classList.add('on')}
 $('#bSet').onclick=openSet;$('#bClose').onclick=()=>$('#mSet').classList.remove('on');
-$('#bSave').onclick=()=>{store.set('key',$('#key').value.trim());store.set('mChat',$('#mChat').value.trim());store.set('mVision',$('#mVision').value.trim());store.set('mStt',$('#mStt').value.trim());store.set('profile',{age:$('#pAge').value,preg:$('#pPreg').value,kid:$('#pKid').value,liv:$('#pLiv').value,all:$('#pAll').value,meds:$('#pMeds').value});$('#mSet').classList.remove('on');toast('Saved locally')};
-$('#bWipe').onclick=()=>{try{localStorage.clear()}catch{}toast('Local data erased');$('#mSet').classList.remove('on')};
+$('#bModels').onclick=async()=>{store.set('key',$('#key').value.trim());MODELS=null;try{const ids=await listModels();$('#dl').innerHTML=ids.map(i=>`<option value="${esc(i)}">`).join('');toast(ids.length+' models available to your key')}catch(e){toast(e.message)}};
+$('#bSave').onclick=()=>{store.set('key',$('#key').value.trim());store.set('mChat',$('#mChat').value.trim());store.set('mVision',$('#mVision').value.trim());store.set('mStt',$('#mStt').value.trim());store.set('lang',$('#lang').value);store.set('notes',$('#pNotes').value.split('\n').map(s=>s.trim()).filter(Boolean));store.set('profile',{age:$('#pAge').value,preg:$('#pPreg').value,kid:$('#pKid').value,liv:$('#pLiv').value,all:$('#pAll').value,meds:$('#pMeds').value});MODELS=null;$('#mSet').classList.remove('on');toast('Saved locally')};
+$('#bWipe').onclick=()=>{try{localStorage.clear()}catch{}hist=[];$('#chatlog').innerHTML='';renderCab();toast('Local data erased');$('#mSet').classList.remove('on')};
+$('#bPrint').onclick=()=>window.print();
+renderCab();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 if(!cfg().key)setTimeout(()=>toast('Tip: add your free Groq key in ⚙ Settings'),1200);
 </script>
