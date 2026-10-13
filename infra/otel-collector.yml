@@ -1,0 +1,6 @@
+receivers: {otlp: {protocols: {grpc: {}, http: {}}}}
+processors:
+  attributes/scrub: {actions: [{key: user.email, action: delete}, {key: http.request.body, action: delete}]}
+  batch: {}
+exporters: {debug: {}}
+service: {pipelines: {traces: {receivers: [otlp], processors: [attributes/scrub, batch], exporters: [debug]}}}

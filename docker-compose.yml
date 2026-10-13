@@ -1,0 +1,56 @@
+services:
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes: ["./frontend:/app"]
+    command: sh -c "npm i && npm run dev -- -H 0.0.0.0"
+    ports: ["3000:3000"]
+    environment: {NEXT_PUBLIC_API: http://localhost:8000}
+    depends_on: [gateway]
+  gateway:
+    build: ./services/api
+    ports: ["8000:8000"]
+    env_file: .env
+    environment: {REDIS_URL: "redis://redis:6379/0", VISION_URL: "http://vision:8001", GROQ_API_KEY: "${GROQ_API_KEY}"}
+    depends_on: [redis, vision, postgres]
+  vision:
+    build: ./services/vision
+    volumes: ["./models:/models:ro"]
+    # GPU: uncomment
+    # deploy: {resources: {reservations: {devices: [{driver: nvidia, count: 1, capabilities: [gpu]}]}}}
+    healthcheck: {test: ["CMD", "python", "-c", "import urllib.request as u;u.urlopen('http://localhost:8001/healthz')"], interval: 30s}
+  agent-worker:
+    build: {context: ./services/agents, dockerfile: Dockerfile}
+    command: celery -A worker_app.celery worker -l info -c 4
+    env_file: .env
+    environment: {REDIS_URL: "redis://redis:6379/0", QDRANT_URL: "http://qdrant:6333", NEO4J_URI: "bolt://neo4j:7687"}
+    depends_on: [redis, qdrant, neo4j]
+  qdrant:
+    image: qdrant/qdrant:latest
+    volumes: ["qdrant:/qdrant/storage"]
+  neo4j:
+    image: neo4j:5
+    environment: {NEO4J_AUTH: "neo4j/${NEO4J_PASSWORD}", NEO4J_PLUGINS: '["apoc"]'}
+    volumes: ["neo4j:/data", "./graph/schema.cypher:/schema.cypher:ro"]
+    ports: ["7474:7474"]
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+  postgres:
+    image: postgres:16
+    environment: {POSTGRES_PASSWORD: "${PG_PASSWORD}", POSTGRES_DB: pharmai}
+    volumes: ["pg:/var/lib/postgresql/data", "./db/schema.sql:/docker-entrypoint-initdb.d/01.sql:ro"]
+  vllm:
+    image: vllm/vllm-openai:latest
+    command: --model ${LLM_MODEL}
+    profiles: ["gpu"]
+  otel:
+    image: otel/opentelemetry-collector-contrib:latest
+    volumes: ["./infra/otel-collector.yml:/etc/otelcol-contrib/config.yaml:ro"]
+  prometheus:
+    image: prom/prometheus
+    volumes: ["./infra/prometheus.yml:/etc/prometheus/prometheus.yml:ro"]
+  grafana:
+    image: grafana/grafana
+    ports: ["3001:3000"]
+volumes: {qdrant: {}, neo4j: {}, pg: {}}

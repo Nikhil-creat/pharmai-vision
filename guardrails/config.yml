@@ -1,0 +1,7 @@
+models:
+  - type: main
+    engine: openai
+    model: ${LLM_MODEL}
+rails:
+  input:  {flows: [check emergency, block prompt injection]}
+  output: {flows: [ground dose claims, add disclaimer]}

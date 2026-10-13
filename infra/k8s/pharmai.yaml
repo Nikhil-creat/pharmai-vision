@@ -1,0 +1,68 @@
+# kubectl create secret generic pharmai-secrets --from-literal=GROQ_API_KEY=... --from-literal=NEO4J_PASSWORD=...
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: gateway}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: gateway}}
+  template:
+    metadata: {labels: {app: gateway}}
+    spec:
+      containers:
+        - name: gateway
+          image: ghcr.io/nikhil-creat/pharmai-gateway:latest
+          ports: [{containerPort: 8000}]
+          envFrom: [{secretRef: {name: pharmai-secrets}}]
+          env: [{name: REDIS_URL, value: "redis://redis:6379/0"}, {name: VISION_URL, value: "http://vision:8001"}]
+          readinessProbe: {httpGet: {path: /metrics, port: 8000}}
+          resources: {requests: {cpu: 250m, memory: 256Mi}, limits: {memory: 512Mi}}
+          securityContext: {runAsNonRoot: true, allowPrivilegeEscalation: false}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: gateway}
+spec: {selector: {app: gateway}, ports: [{port: 8000}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: vision}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: vision}}
+  template:
+    metadata: {labels: {app: vision}}
+    spec:
+      containers:
+        - name: vision
+          image: ghcr.io/nikhil-creat/pharmai-vision:latest
+          ports: [{containerPort: 8001}]
+          resources: {requests: {cpu: "1", memory: 3Gi}, limits: {memory: 6Gi}}   # add nvidia.com/gpu: 1 for GPU
+---
+apiVersion: v1
+kind: Service
+metadata: {name: vision}
+spec: {selector: {app: vision}, ports: [{port: 8001}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: agent-worker}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: agent-worker}}
+  template:
+    metadata: {labels: {app: agent-worker}}
+    spec:
+      containers:
+        - name: worker
+          image: ghcr.io/nikhil-creat/pharmai-agents:latest
+          envFrom: [{secretRef: {name: pharmai-secrets}}]
+          env: [{name: REDIS_URL, value: "redis://redis:6379/0"}, {name: QDRANT_URL, value: "http://qdrant:6333"}, {name: NEO4J_URI, value: "bolt://neo4j:7687"}]
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {name: gateway}
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: gateway}
+  minReplicas: 2
+  maxReplicas: 10
+  metrics: [{type: Resource, resource: {name: cpu, target: {type: Utilization, averageUtilization: 70}}}]

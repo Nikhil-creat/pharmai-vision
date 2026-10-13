@@ -1,0 +1,13 @@
+define flow check emergency
+  if $user_message matches "overdose|anaphylaxis|can't breathe|suicid"
+    bot say emergency message
+    stop
+
+define flow ground dose claims
+  $ok = execute verify_claims_against_evidence(answer=$bot_message, evidence=$evidence)
+  if not $ok
+    bot say "I can't verify that from trusted sources. Please ask a pharmacist."
+    stop
+
+define flow add disclaimer
+  $bot_message = $bot_message + "\n\nEducational information only. Not medical advice."

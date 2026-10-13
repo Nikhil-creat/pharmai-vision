@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+httpx
+celery[redis]
+python-multipart
+prometheus-fastapi-instrumentator

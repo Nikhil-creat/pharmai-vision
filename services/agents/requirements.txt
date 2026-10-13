@@ -1,0 +1,12 @@
+langgraph
+langchain-openai
+qdrant-client
+neo4j
+rank-bm25
+sentence-transformers
+nemoguardrails
+celery[redis]
+fastapi
+uvicorn[standard]
+opentelemetry-distro
+opentelemetry-exporter-otlp

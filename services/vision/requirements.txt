@@ -1,0 +1,10 @@
+torch
+timm
+opencv-python-headless
+paddleocr
+paddlepaddle
+onnxruntime
+fastapi
+uvicorn[standard]
+python-multipart
+prometheus-fastapi-instrumentator

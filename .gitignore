@@ -1,0 +1,6 @@
+.env
+*.pt
+*.onnx
+node_modules/
+__pycache__/
+.DS_Store
